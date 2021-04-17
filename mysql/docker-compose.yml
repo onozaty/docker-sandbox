@@ -7,6 +7,14 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+#   volumes:
+#     - ./db/data:/var/lib/mysql
+    ports:
+      - 3306:3306
+
   adminer:
     image: adminer
     restart: always
