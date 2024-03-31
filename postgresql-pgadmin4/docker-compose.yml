@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: sample
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  pgadmin4:
+    image: dpage/pgadmin4:8.4
+    ports:
+      - 8080:80
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+  pgadmin-data:
