@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:latest
+    restart: unless-stopped
+    tmpfs:
+      - /var/lib/postgresql/tablespaces/tmpfs_tablespace:uid=999,gid=999,mode=0777
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/:/init
+    entrypoint: ["/bin/bash", "/init/startup.sh"]
+    environment:
+      POSTGRES_PASSWORD: db_password
+      POSTGRES_USER: db_user
+      POSTGRES_DB: sample
+  pgadmin4:
+    image: dpage/pgadmin4:latest
+    ports:
+      - 8080:80
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./pgamin/servers.json:/pgadmin4/servers.json
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@example.com
+      PGADMIN_DEFAULT_PASSWORD: password
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    depends_on:
+      - db
+volumes:
+  postgres-data:
+  pgadmin-data:
